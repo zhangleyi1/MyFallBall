@@ -1,31 +1,12 @@
 package com.huxq17.example.floatball;
 
-import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Application;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.PreferenceCategory;
-import android.support.annotation.NonNull;
-import android.telecom.PhoneAccount;
-import android.telecom.PhoneAccountHandle;
-import android.telecom.TelecomManager;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.huxq17.example.floatball.floatball.FloatBallManager;
@@ -35,11 +16,6 @@ import com.huxq17.example.floatball.floatball.menu.MenuItem;
 import com.huxq17.example.floatball.permission.FloatPermissionManager;
 import com.huxq17.example.floatball.utils.BackGroudSeletor;
 import com.huxq17.example.floatball.utils.DensityUtil;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.RandomAccessFile;
 
 public class MainActivity extends Activity {
     private FloatBallManager mFloatballManager;
@@ -70,6 +46,7 @@ public class MainActivity extends Activity {
         //6 如果想做成应用内悬浮球，可以添加以下代码。
 //        getApplication().registerActivityLifecycleCallbacks(mActivityLifeCycleListener);
         mFloatballManager.show();
+        finish();
     }
 
     private void init(boolean showMenu) {
@@ -178,6 +155,7 @@ public class MainActivity extends Activity {
                 mFloatballManager.closeMenu();
             }
         };
+
         mFloatballManager.addMenuItem(personItem)
                 .addMenuItem(walletItem)
                 .addMenuItem(settingItem)
@@ -190,9 +168,6 @@ public class MainActivity extends Activity {
         } else {
             mFloatballManager.hide();
         }
-
-
-
     }
 
     public boolean isApplicationInForeground() {
@@ -204,7 +179,5 @@ public class MainActivity extends Activity {
         super.onDestroy();
         //注册ActivityLifeCyclelistener以后要记得注销，以防内存泄漏。
         getApplication().unregisterActivityLifecycleCallbacks(mActivityLifeCycleListener);
-//        this.getLocalClassName();
-        getBaseContext().getClass().getName();
     }
 }

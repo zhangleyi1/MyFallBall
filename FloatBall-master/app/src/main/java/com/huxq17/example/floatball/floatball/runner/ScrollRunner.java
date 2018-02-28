@@ -28,7 +28,6 @@ public class ScrollRunner implements Runnable {
     }
 
     public void start(int startX, int startY, int dx, int dy, int duration) {
-        android.util.Log.d("zly", "zly --> start param 5.");
         this.mDuration = duration;
         mScroller.startScroll(startX, startY, dx, dy, duration);
         mCarrier.removeCallbacks(this);
@@ -37,13 +36,8 @@ public class ScrollRunner implements Runnable {
         lastY = startY;
     }
 
-    public void start() {
-        mCarrier.removeCallbacks(this);
-        mCarrier.post(this);
-    }
     @Override
     public void run() {
-        android.util.Log.d("zly", "zly --> run begin.");
         if (mScroller.computeScrollOffset()) {
             final int currentX = mScroller.getCurrX();
             final int currentY = mScroller.getCurrY();

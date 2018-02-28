@@ -37,13 +37,13 @@ import java.lang.reflect.Method;
 public class FloatPermissionManager {
     private static final String TAG = "FloatPermissionManager";
 
-
     private boolean isWindowDismiss = true;
     private WindowManager windowManager = null;
     private WindowManager.LayoutParams mParams = null;
-    private AlertDialog dialog;
+    private Dialog dialog;
 
     public void applyOrShowFloatWindow(Context context) {
+        Log.d(TAG, "zly --> checkPermission(context):" + checkPermission(context));
         if (checkPermission(context)) {
             showWindow(context);
         } else {
@@ -56,13 +56,13 @@ public class FloatPermissionManager {
         if (Build.VERSION.SDK_INT < 23) {
             if (RomUtils.checkIsMiuiRom()) {
                 return miuiPermissionCheck(context);
-            } /*else if (RomUtils.checkIsMeizuRom()) {
+            } else if (RomUtils.checkIsMeizuRom()) {
                 return meizuPermissionCheck(context);
             } else if (RomUtils.checkIsHuaweiRom()) {
                 return huaweiPermissionCheck(context);
             } else if (RomUtils.checkIs360Rom()) {
                 return qikuPermissionCheck(context);
-            }*/
+            }
         }
         return commonROMPermissionCheck(context);
     }
@@ -221,7 +221,7 @@ public class FloatPermissionManager {
                             public void onClick(DialogInterface dialog, int which) {
                                 result.confirmResult(true);
                                 dialog.dismiss();
-                                System.exit(0);
+//                                System.exit(0);
                             }
                         }).setNegativeButton("暂不开启",
                         new DialogInterface.OnClickListener() {

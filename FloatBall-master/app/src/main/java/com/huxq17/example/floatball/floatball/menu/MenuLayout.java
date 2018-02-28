@@ -5,8 +5,6 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 
-import com.huxq17.example.floatball.TestRun;
-import com.huxq17.example.floatball.TestView;
 import com.huxq17.example.floatball.floatball.runner.ICarrier;
 import com.huxq17.example.floatball.floatball.runner.ScrollRunner;
 import com.huxq17.example.floatball.utils.DensityUtil;
@@ -201,11 +199,7 @@ public class MenuLayout extends ViewGroup implements ICarrier {
         computeCenterXY(position);
         final int start = mExpanded ? 0 : mRadius;
         final int radius = mExpanded ? mRadius : -mRadius;
-//        mRunner.start(start, 0, radius, 0, duration);
-//        new TestView(getContext());
-        TestRun testRun = new TestRun(this);
-        testRun.start();
-//        mRunner.start();
+        mRunner.start(start, 0, radius, 0, duration);
     }
 
     @Override
