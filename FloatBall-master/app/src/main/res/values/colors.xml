@@ -3,4 +3,7 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="choose_app_bg_color">#FFBBBBBB</color>
+    <color name="line_color">#FF888888</color>
+    <color name="choose_app_bg_color_normal">#FFFFFFFF</color>
 </resources>

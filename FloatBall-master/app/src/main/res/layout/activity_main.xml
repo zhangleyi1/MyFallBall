@@ -3,14 +3,53 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.huxq17.example.floatball.MainActivity">
+    tools:context="com.zly.floatball.MainActivity">
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/start_btn"
         android:onClick="showFloatBall"
-        android:layout_centerInParent="true"
-        android:text="显示悬浮球" />
+        android:text="@string/start" />
 
-  
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/start_btn"
+        android:onClick="hideFloatBall"
+        android:id="@+id/stop_btn"
+        android:text="@string/stop" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:id="@+id/line1"
+        android:background="@color/line_color"
+        android:layout_below="@id/stop_btn"/>
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:id="@+id/choose_app_tv"
+        android:layout_below="@+id/line1"
+        android:text="@string/choose_app_text"
+        android:padding="10dp"
+        android:textSize="18sp"
+        android:clickable="true"
+        android:background="@drawable/choose_app_bg"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:id="@+id/line2"
+        android:background="@color/line_color"
+        android:layout_below="@id/choose_app_tv"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/recycleView"
+        android:layout_below="@id/line2">
+    </android.support.v7.widget.RecyclerView>
 </RelativeLayout>
