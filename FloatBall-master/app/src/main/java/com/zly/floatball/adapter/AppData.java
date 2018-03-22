@@ -1,7 +1,6 @@
 package com.zly.floatball.adapter;
 
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -13,10 +12,15 @@ public class AppData implements Parcelable{
     Bitmap mIcon;
     String mName;
     boolean mState;
+    String mPackagesName;
+    String mClassName;
 
     public AppData(Parcel in) {
+        mIcon = (Bitmap) in.readParcelable(Bitmap.class.getClassLoader());
         mName = in.readString();
         mState = in.readByte() != 0;
+        mPackagesName = in.readString();
+        mClassName = in.readString();
     }
 
     public static final Creator<AppData> CREATOR = new Creator<AppData>() {
@@ -59,6 +63,22 @@ public class AppData implements Parcelable{
         this.mState = mState;
     }
 
+    public String getPackagesName() {
+        return mPackagesName;
+    }
+
+    public void setPackagesName(String mPackagesName) {
+        this.mPackagesName = mPackagesName;
+    }
+
+    public String getClassName() {
+        return mClassName;
+    }
+
+    public void setClassName(String mClassName) {
+        this.mClassName = mClassName;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -66,7 +86,10 @@ public class AppData implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeParcelable(mIcon, flags);
         dest.writeString(mName);
         dest.writeByte((byte) (mState ? 1 : 0));
+        dest.writeString(mPackagesName);
+        dest.writeString(mClassName);
     }
 }

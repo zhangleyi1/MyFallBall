@@ -5,27 +5,77 @@
     android:layout_height="match_parent"
     tools:context="com.zly.floatball.MainActivity">
 
-    <Button
+    <RadioGroup
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/start_btn"
-        android:onClick="showFloatBall"
-        android:text="@string/start" />
+        android:padding="10dp"
+        android:id="@+id/rg"
+        android:layout_alignParentRight="true">
 
-    <Button
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/start_btn"
+            android:paddingTop="20dp"
+            android:onClick="showFloatBall" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/start_btn"
+            android:onClick="hideFloatBall"
+            android:paddingTop="20dp"
+            android:id="@+id/stop_btn" />
+    </RadioGroup>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:id="@+id/start_rb_tv"
+        android:gravity="center_vertical"
+        android:text="@string/start"
+        android:paddingTop="15dp"
+        android:paddingLeft="10dp" />
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/start_btn"
-        android:onClick="hideFloatBall"
-        android:id="@+id/stop_btn"
-        android:text="@string/stop" />
+        android:textSize="18sp"
+        android:id="@+id/stop_rb_tv"
+        android:layout_below="@id/start_rb_tv"
+        android:text="@string/stop"
+        android:paddingTop="14dp"
+        android:paddingLeft="10dp"
+        android:gravity="center_vertical" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/sb_tv"
+        android:textSize="18sp"
+        android:layout_below="@id/rg"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="10dp"
+        android:text="@string/sb_tv_text"/>
+
+    <SeekBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/sb"
+        android:layout_below="@id/rg"
+        android:paddingTop="2dp"
+        android:max="100"
+        android:min="1"
+        android:layout_toRightOf="@id/sb_tv" />
 
     <View
+        android:layout_marginTop="25dp"
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:id="@+id/line1"
         android:background="@color/line_color"
-        android:layout_below="@id/stop_btn"/>
+        android:layout_below="@id/sb"/>
 
     <TextView
         android:layout_height="wrap_content"
@@ -36,8 +86,7 @@
         android:padding="10dp"
         android:textSize="18sp"
         android:clickable="true"
-        android:background="@drawable/choose_app_bg"
-        />
+        android:background="@drawable/choose_app_bg" />
 
     <View
         android:layout_width="match_parent"

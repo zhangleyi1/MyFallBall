@@ -65,6 +65,11 @@ public class FloatBallManager {
         return this;
     }
 
+    public void clearAllListMenuItem() {
+        menuItems.clear();
+        floatMenu.removeAllItemViews();
+    }
+
     public int getMenuItemSize() {
         return menuItems != null ? menuItems.size() : 0;
     }

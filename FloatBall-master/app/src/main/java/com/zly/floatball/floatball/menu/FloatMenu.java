@@ -171,12 +171,12 @@ public class FloatMenu extends FrameLayout {
     public void addItem(final MenuItem menuItem) {
         if (mConfig == null) return;
         ImageView imageview = new ImageView(getContext());
-        imageview.setBackgroundDrawable(menuItem.mDrawable);
+        imageview.setImageBitmap(menuItem.getmBitmap());
         mMenuLayout.addView(imageview);
         imageview.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                menuItem.action();
+                menuItem.action(menuItem.getmPackageName(), menuItem.getmClassName());
             }
         });
     }

@@ -1,9 +1,12 @@
 package com.zly.floatball;
 
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -17,9 +20,8 @@ import android.view.View;
 import com.zly.floatball.adapter.AppData;
 import com.zly.floatball.adapter.RecyclerViewAdapter;
 import com.zly.floatball.permission.FloatPermissionManager;
-import com.zly.floatball.utils.AppDataParcel;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends Activity implements RecyclerViewAdapter.CallBack {
@@ -29,15 +31,21 @@ public class MainActivity extends Activity implements RecyclerViewAdapter.CallBa
     private HandlerThread workThread;
     private RecyclerView mRecyclerView;
     private RecyclerViewAdapter mAdapter;
-    private LinkedList<AppData> mListData = new LinkedList<AppData>();
+    private ArrayList<AppData> mListData = new ArrayList<AppData>();
+    private ArrayList<AppData> mSendListData = new ArrayList<AppData>();
+    private boolean mIsServiceRunning = true;   //debug ,when the project has db,this values will change to false;
+    private int mMenuSize = 0;
 
     public void showFloatBall(View v) {
         Log.d(TAG, "zly --> showFloatBall.");
-        AppDataParcel appDataParcel = new AppDataParcel(mListData);
+        startFloatBall();
+    }
+
+    private void startFloatBall() {
         Intent intent = new Intent(MainActivity.this, StartService.class);
         Bundle bundle = new Bundle();
-        bundle.putParcelableArrayList("data", );
-        intent.putExtra("data", appDataParcel);
+        bundle.putParcelableArrayList("data", mSendListData);
+        intent.putExtras(bundle);
         startService(intent);
     }
 
@@ -63,7 +71,7 @@ public class MainActivity extends Activity implements RecyclerViewAdapter.CallBa
 
     private void intView() {
         mRecyclerView = (RecyclerView)findViewById(R.id.recycleView);
-        mAdapter = new RecyclerViewAdapter(MainActivity.this, mListData, this);
+        mAdapter = new RecyclerViewAdapter(MainActivity.this, mListData, this, mMenuSize);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(layoutManager);
         layoutManager.setOrientation(OrientationHelper.VERTICAL);
@@ -91,8 +99,12 @@ public class MainActivity extends Activity implements RecyclerViewAdapter.CallBa
             ResolveInfo resolve = mApps.get(i);
             AppData appData = new AppData();
             appData.setName(resolve.loadLabel(pManager).toString());
-            appData.setIcon(resolve.loadIcon(pManager));
+            appData.setIcon(((BitmapDrawable)resolve.loadIcon(pManager)).getBitmap());
             appData.setState(false);
+            appData.setPackagesName(resolve.activityInfo.packageName);
+            appData.setClassName(resolve.activityInfo.name);
+//            Log.d(TAG, "zly -> className:" + resolve.activityInfo.applicationInfo.className + " packageName:" + resolve.activityInfo.packageName + " processName:" +
+//                    resolve.activityInfo.processName + " className:" + resolve.activityInfo.name);
             mListData.add(appData);
         }
     }
@@ -103,7 +115,21 @@ public class MainActivity extends Activity implements RecyclerViewAdapter.CallBa
     }
 
     @Override
-    public void obtainPosition(int position) {
-        Log.d(TAG, "zly --> obtainPosition position:" + position + " state:" + mListData.get(position).getState());
+    public void finishLoader() {
+        Log.d(TAG, "zly --> finishLoader.isServiceRunning.");
+        updateSendList();
+        if (mIsServiceRunning) {
+            startFloatBall();
+        }
+    }
+
+    private void updateSendList() {
+        final int mListDataLength = mListData.size();
+        mSendListData.clear();
+        for (int i = 0; i < mListDataLength; i++) {
+            if (mListData.get(i).getState()) {
+                mSendListData.add(mListData.get(i));
+            }
+        }
     }
 }

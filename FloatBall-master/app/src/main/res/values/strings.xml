@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">FloatBall</string>
-    <string name="start">Start</string>
-    <string name="stop">Stop</string>
+    <string name="start">Start Float Ball.</string>
+    <string name="stop">Stop Float Ball.</string>
     <string name="choose_app_text">选择快捷应用</string>
+    <string name="sb_tv_text">透明度：</string>
 </resources>

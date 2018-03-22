@@ -12,9 +12,11 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.zly.floatball.R;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
@@ -22,17 +24,19 @@ import java.util.LinkedList;
  */
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.CustomViewHolder> {
 
-    private final LinkedList<AppData> mList;
+    private final ArrayList<AppData> mList;
     private final Context mContext;
     private LayoutInflater mInflater;
     private String TAG = "RecyclerViewAdapter";
     CallBack mCallBack;
+    private int mMenuSize = 0;
 
-    public RecyclerViewAdapter(Context context, LinkedList<AppData> list, CallBack callBack) {
+    public RecyclerViewAdapter(Context context, ArrayList<AppData> list, CallBack callBack, int menuSize) {
         mContext = context;
         mCallBack = callBack;
         mList = list;
         mInflater = LayoutInflater.from(context);
+        mMenuSize = menuSize;
     }
 
     @Override
@@ -46,17 +50,32 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(CustomViewHolder holder, final int position) {
         Log.d(TAG, "zly --> onBindViewHolder position:" + position);
-        holder.mImageView.setImageDrawable(mList.get(position).mIcon);
+        holder.mImageView.setImageBitmap(mList.get(position).mIcon);
         holder.mTextView.setText(mList.get(position).mName);
         holder.mCheckBox.setChecked(mList.get(position).mState);
         holder.mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 Log.d(TAG, "zly --> onCheckedChanged isChecked:" + isChecked);
+                if (isChecked) {
+                    mMenuSize++;
+                } else {
+                    mMenuSize--;
+                }
+
+                if (mMenuSize > 5) {
+                    mMenuSize--;
+                    Toast.makeText(mContext, "You choose too many apps.", Toast.LENGTH_SHORT).show();
+                    buttonView.setChecked(false);
+                    return;
+                }
                 mList.get(position).setState(isChecked);
-                mCallBack.obtainPosition(position);
+                mCallBack.finishLoader();
             }
         });
+        if (position == (mList.size() - 1)) {
+            mCallBack.finishLoader();
+        }
         holder.itemView.setTag(position);
     }
 
@@ -80,6 +99,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     public interface CallBack {
-        abstract void obtainPosition(int position);
+        abstract void finishLoader();
     }
 }

@@ -1,6 +1,6 @@
 package com.zly.floatball.utils;
 
-import android.graphics.drawable.Drawable;
+import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -12,17 +12,16 @@ import java.util.ArrayList;
  * Created by Administrator on 2018/3/21.
  */
 
-public class AppDataParcel implements Parcelable{
+public class AppDataParcel implements Parcelable {
     public ArrayList<AppData> mAppDataList = new ArrayList<AppData>();
     private AppData mAppData;
 
     public AppDataParcel(Parcel in) {
         mAppData = new AppData();
-        mAppData.setIcon((Drawable) in.readParcelable(Drawable.class.getClassLoader()));
+        mAppData.setIcon((Bitmap) in.readParcelable(Bitmap.class.getClassLoader()));
         mAppData.setName(in.readString());
         mAppData.setState(in.readByte() != 0 ? true:false);
         mAppDataList = in.readArrayList(AppData.class.getClassLoader());
-
     }
 
     public static final Creator<AppDataParcel> CREATOR = new Creator<AppDataParcel>() {
