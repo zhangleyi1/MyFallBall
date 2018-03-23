@@ -32,6 +32,7 @@ public class FloatBallManager {
     public int floatballX, floatballY;
     private boolean isShowing = false;
     private List<MenuItem> menuItems = new ArrayList<>();
+    private int mEdgeTime = 2;
 
     public FloatBallManager(Context application, FloatBallCfg ballCfg) {
         this(application, ballCfg, null);
@@ -119,6 +120,14 @@ public class FloatBallManager {
         floatMenu.detachFromWindow(mWindowManager);
     }
 
+    public void setAlpha(float value) {
+        floatBall.setAlpha(value);
+    }
+
+    public void setEdgeTime(int time) {
+        mEdgeTime = time;
+        floatBall.setEdgeTime(time);
+    }
     public void closeMenu() {
         floatMenu.closeMenu();
     }
@@ -157,24 +166,5 @@ public class FloatBallManager {
 
     public interface OnFloatBallClickListener {
         void onFloatBallClick();
-    }
-
-    public interface IFloatBallPermission {
-        /**
-         * request the permission of floatball,just use ,
-         * or use your custom method.
-         *
-         * @return return true if requested the permission
-         */
-        boolean onRequestFloatBallPermission();
-
-        /**
-         * detect whether allow  using floatball here or not.
-         *
-         * @return
-         */
-        boolean hasFloatBallPermission(Context context);
-
-        void requestFloatBallPermission(Activity activity);
     }
 }

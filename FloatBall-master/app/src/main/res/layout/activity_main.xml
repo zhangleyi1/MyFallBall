@@ -66,8 +66,32 @@
         android:layout_below="@id/rg"
         android:paddingTop="2dp"
         android:max="100"
-        android:min="1"
+        android:min="10"
+        android:progress="100"
         android:layout_toRightOf="@id/sb_tv" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/time_tv"
+        android:layout_below="@id/sb"
+        android:text="@string/time_tv_text"
+        android:textSize="18sp"
+        android:paddingLeft="10dp"
+        android:gravity="center_vertical"
+        android:layout_marginTop="20dp"/>
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/time_sp"
+        android:layout_below="@id/sb"
+        android:gravity="center"
+        android:paddingLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_toRightOf="@id/time_tv"
+        android:entries="@array/time">
+    </Spinner>
 
     <View
         android:layout_marginTop="25dp"
@@ -75,7 +99,7 @@
         android:layout_height="1px"
         android:id="@+id/line1"
         android:background="@color/line_color"
-        android:layout_below="@id/sb"/>
+        android:layout_below="@id/time_sp"/>
 
     <TextView
         android:layout_height="wrap_content"

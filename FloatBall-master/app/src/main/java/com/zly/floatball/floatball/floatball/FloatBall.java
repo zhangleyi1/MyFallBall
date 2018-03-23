@@ -48,6 +48,7 @@ public class FloatBall extends FrameLayout implements ICarrier {
             }
         }
     };
+    private int mEdgeTime = 2;
 
     public FloatBall(Context context, FloatBallManager floatBallManager, FloatBallCfg config) {
         super(context);
@@ -268,7 +269,13 @@ public class FloatBall extends FrameLayout implements ICarrier {
 
     public void postSleepRunnable() {
         if (!sleep && isAdded) {
-            mSleepRunnable.postDelaySelf(this, 3000);
+            if (mEdgeTime != 100) {
+                mSleepRunnable.postDelaySelf(this, mEdgeTime*1000);
+            }
         }
+    }
+
+    public void setEdgeTime(int time) {
+        mEdgeTime = time;
     }
 }

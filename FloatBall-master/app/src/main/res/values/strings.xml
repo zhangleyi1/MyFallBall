@@ -4,4 +4,5 @@
     <string name="stop">Stop Float Ball.</string>
     <string name="choose_app_text">选择快捷应用</string>
     <string name="sb_tv_text">透明度：</string>
+    <string name="time_tv_text">贴边时间：</string>
 </resources>
