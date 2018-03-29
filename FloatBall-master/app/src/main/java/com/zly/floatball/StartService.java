@@ -46,6 +46,7 @@ public class StartService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "zly --> onStartCommand");
         ArrayList<AppData> listData = intent.getParcelableArrayListExtra("data");
+
         if (listData != null) {
             log("listDatalength:" + listData.size());
             addFloatMenuItem(listData);
@@ -74,7 +75,7 @@ public class StartService extends Service {
             mFloatballManager.setOnFloatBallClickListener(new FloatBallManager.OnFloatBallClickListener() {
                 @Override
                 public void onFloatBallClick() {
-                    toast("点击了悬浮球");
+                    toast("当前添加的应用为空。");
                 }
             });
         }

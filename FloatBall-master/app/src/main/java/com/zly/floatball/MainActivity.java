@@ -267,6 +267,7 @@ public class MainActivity extends Activity implements RecyclerViewAdapter.CallBa
                 mDefaultData.packageFive = mPackagesList.get(1);
             case 1:
                 mDefaultData.packageFive = mPackagesList.get(0);
+                break;
         }
 
         saveDataToDb();

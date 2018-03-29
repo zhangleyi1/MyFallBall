@@ -145,6 +145,7 @@ public class FloatBallManager {
             if (mFloatballClickListener != null) {
                 mFloatballClickListener.onFloatBallClick();
             }
+            floatBall.postSleepRunnable();
         }
     }
 

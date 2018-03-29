@@ -3,6 +3,7 @@ package com.zly.floatball.floatball.floatball;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
@@ -39,15 +40,19 @@ public class FloatBall extends FrameLayout implements ICarrier {
     private MotionVelocityUtil mVelocity;
     private boolean sleep = false;
     private FloatBallCfg mConfig;
+    private String TAG = "FloatBall";
+
     private OnceRunnable mSleepRunnable = new OnceRunnable() {
         @Override
         public void onRun() {
+            Log.d(TAG, "zly --> onRun isAdded:" + isAdded);
             if (isAdded) {
                 sleep = true;
                 moveToEdge(false, sleep);
             }
         }
     };
+
     private int mEdgeTime = 2;
 
     public FloatBall(Context context, FloatBallManager floatBallManager, FloatBallCfg config) {
@@ -78,6 +83,7 @@ public class FloatBall extends FrameLayout implements ICarrier {
     }
 
     public void attachToWindow(WindowManager windowManager) {
+        Log.d(TAG, "zly --> attachToWindow isAdded:" + isAdded);
         this.windowManager = windowManager;
         if (!isAdded) {
             windowManager.addView(this, mLayoutParams);
@@ -87,6 +93,7 @@ public class FloatBall extends FrameLayout implements ICarrier {
 
     public void detachFromWindow(WindowManager windowManager) {
         this.windowManager = null;
+        Log.d(TAG, "zly --> detachFromWindow isAdded:" + isAdded);
         if (isAdded) {
             removeSleepRunnable();
             windowManager.removeView(this);
@@ -99,9 +106,10 @@ public class FloatBall extends FrameLayout implements ICarrier {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int height = getMeasuredHeight();
+        //Log.d("zly", "zly --> height:" + height + " isFirst:" + isFirst + " screenHeight:" + floatBallManager.mScreenHeight);
         if (height != 0 && isFirst) {
             isFirst = false;
-            int deltaY = floatBallManager.mScreenHeight / 2 - height;
+            int deltaY = floatBallManager.mScreenHeight/2 - height;
             onMove(0, deltaY);
         }
     }
@@ -109,6 +117,7 @@ public class FloatBall extends FrameLayout implements ICarrier {
     @Override
     protected void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+        Log.d(TAG, "zly --> onConfigurationChanged.");
         floatBallManager.onConfigurationChanged(newConfig);
         moveToEdge(false, false);
         postSleepRunnable();
@@ -164,6 +173,7 @@ public class FloatBall extends FrameLayout implements ICarrier {
         mVelocityX = (int) mVelocity.getXVelocity();
         mVelocityY = (int) mVelocity.getYVelocity();
         mVelocity.releaseVelocityTracker();
+        Log.d(TAG, "zly --> touchUp sleep:" + sleep);
         if (sleep) {
             wakeUp();
         } else {
@@ -215,10 +225,10 @@ public class FloatBall extends FrameLayout implements ICarrier {
         int destX;
         final int minVelocity = mVelocity.getMinVelocity();
         if (mLayoutParams.x < centerX) {
-            sleep = forceSleep ? true : Math.abs(mVelocityX) > minVelocity && mVelocityX < 0 || mLayoutParams.x < 0;
+            sleep = forceSleep || (Math.abs(mVelocityX) > minVelocity && mVelocityX < 0 || mLayoutParams.x < 0);
             destX = sleep ? -halfWidth : 0;
         } else {
-            sleep = forceSleep ? true : Math.abs(mVelocityX) > minVelocity && mVelocityX > 0 || mLayoutParams.x > screenWidth - width;
+            sleep = forceSleep || (Math.abs(mVelocityX) > minVelocity && mVelocityX > 0 || mLayoutParams.x > screenWidth - width);
             destX = sleep ? screenWidth - halfWidth : screenWidth - width;
         }
         moveToX(smooth, destX);
@@ -236,6 +246,7 @@ public class FloatBall extends FrameLayout implements ICarrier {
         }
     }
 
+    @Override
     public void onMove(int lastX, int lastY, int curX, int curY) {
         onMove(curX - lastX, curY - lastY);
     }
@@ -263,11 +274,12 @@ public class FloatBall extends FrameLayout implements ICarrier {
         floatBallManager.onFloatBallClick();
     }
 
-    private void removeSleepRunnable() {
+    public void removeSleepRunnable() {
         mSleepRunnable.removeSelf(this);
     }
 
     public void postSleepRunnable() {
+        Log.d(TAG, "zly --> sleep:" + sleep + " isAdded:" + isAdded + " mEdgeTime:" + mEdgeTime);
         if (!sleep && isAdded) {
             if (mEdgeTime != 100) {
                 mSleepRunnable.postDelaySelf(this, mEdgeTime*1000);

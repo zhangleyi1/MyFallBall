@@ -48,13 +48,32 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     @Override
-    public void onBindViewHolder(CustomViewHolder holder, final int position) {
+    public void onBindViewHolder(final CustomViewHolder holder, final int position) {
         Log.d(TAG, "zly --> onBindViewHolder position:" + position);
         holder.mImageView.setImageBitmap(mList.get(position).mIcon);
         holder.mTextView.setText(mList.get(position).mName);
         holder.mCheckBox.setChecked(mList.get(position).mState);
-        holder.mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        //holder.mCheckBox.setOnCheckedChangeListener(); //This was callback when slip the recyclerView, so we should use setOnClickListener.
+        holder.mCheckBox.setOnClickListener(new View.OnClickListener() {
             @Override
+            public void onClick(View v) {
+//                    Log.d(TAG, "zly --> onCheckedChanged isChecked:" + isChecked);
+                if (holder.mCheckBox.isChecked()) {
+                    mMenuSize++;
+                } else {
+                    mMenuSize--;
+                }
+
+                if (mMenuSize > 5) {
+                    mMenuSize--;
+                    Toast.makeText(mContext, "You choose too many apps.", Toast.LENGTH_SHORT).show();
+                    holder.mCheckBox.setChecked(false);
+                    return;
+                }
+                mList.get(position).setState(holder.mCheckBox.isChecked());
+                mCallBack.finishLoader();
+            }
+            /*@Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 Log.d(TAG, "zly --> onCheckedChanged isChecked:" + isChecked);
                 if (isChecked) {
@@ -71,7 +90,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 }
                 mList.get(position).setState(isChecked);
                 mCallBack.finishLoader();
-            }
+            }*/
         });
         if (position == (mList.size() - 1)) {
             mCallBack.finishLoader();
