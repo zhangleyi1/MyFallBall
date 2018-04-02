@@ -156,6 +156,15 @@ public class FloatBallManager {
         floatMenu.detachFromWindow(mWindowManager);
     }
 
+
+    /**
+     * 移动完毕，刷新菜单状态。move over，refresh menu state.
+    */
+    public void moveOver() {
+        // TODO 刷新position 然后刷新宽高
+        floatMenu.refreshState();
+    }
+
     public void onConfigurationChanged(Configuration newConfig) {
         computeScreenSize();
         reset();

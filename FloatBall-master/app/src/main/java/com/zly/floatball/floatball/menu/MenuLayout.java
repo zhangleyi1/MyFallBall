@@ -12,8 +12,6 @@ import com.zly.floatball.utils.DensityUtil;
 
 /**
  * 子菜单项布局
- *
- * @author 何凌波
  */
 public class MenuLayout extends ViewGroup implements ICarrier {
     private int mChildSize;
@@ -32,43 +30,54 @@ public class MenuLayout extends ViewGroup implements ICarrier {
     public void computeCenterXY(int position) {
         switch (position) {
             case FloatMenu.LEFT_TOP://左上
-                centerX = getWidth() / 2 - getRadiusAndPadding();
-                centerY = getHeight() / 2 - getRadiusAndPadding();
+                centerX = getMeasuredWidth() / 2 - getRadiusAndPadding();
+                centerY = getMeasuredHeight() / 2 - getRadiusAndPadding();
                 break;
             case FloatMenu.LEFT_CENTER://左中
-                centerX = getWidth() / 2 - getRadiusAndPadding();
-                centerY = getHeight() / 2;
+                centerX = getMeasuredWidth() / 2 - getRadiusAndPadding();
+                centerY = getMeasuredHeight() / 2;
                 break;
             case FloatMenu.LEFT_BOTTOM://左下
-                centerX = getWidth() / 2 - getRadiusAndPadding();
-                centerY = getHeight() / 2 + getRadiusAndPadding();
+                centerX = getMeasuredWidth() / 2 - getRadiusAndPadding();
+                centerY = getMeasuredHeight() / 2 + getRadiusAndPadding();
                 break;
             case FloatMenu.CENTER_TOP://上中
-                centerX = getWidth() / 2;
-                centerY = getHeight() / 2 - getRadiusAndPadding();
+                centerX = getMeasuredWidth() / 2;
+                centerY = getMeasuredHeight() / 2 - getRadiusAndPadding();
                 break;
             case FloatMenu.CENTER_BOTTOM://下中
-                centerX = getWidth() / 2;
-                centerY = getHeight() / 2 + getRadiusAndPadding();
+                centerX = getMeasuredWidth() / 2;
+                centerY = getMeasuredHeight() / 2 + getRadiusAndPadding();
                 break;
             case FloatMenu.RIGHT_TOP://右上
-                centerX = getWidth() / 2 + getRadiusAndPadding();
-                centerY = getHeight() / 2 - getRadiusAndPadding();
+                centerX = getMeasuredWidth() / 2 + getRadiusAndPadding();
+                centerY = getMeasuredHeight() / 2 - getRadiusAndPadding();
                 break;
             case FloatMenu.RIGHT_CENTER://右中
-                centerX = getWidth() / 2 + getRadiusAndPadding();
-                centerY = getHeight() / 2;
+                centerX = getMeasuredWidth() / 2 + getRadiusAndPadding();
+                centerY = getMeasuredHeight() / 2;
                 break;
             case FloatMenu.RIGHT_BOTTOM://右下
-                centerX = getWidth() / 2 + getRadiusAndPadding();
-                centerY = getHeight() / 2 + getRadiusAndPadding();
+                centerX = getMeasuredWidth() / 2 + getRadiusAndPadding();
+                centerY = getMeasuredHeight() / 2 + getRadiusAndPadding();
                 break;
 
             case FloatMenu.CENTER:
-                centerX = getWidth() / 2;
-                centerY = getHeight() / 2;
+                centerX = getMeasuredWidth() / 2;
+                centerY = getMeasuredHeight() / 2;
                 break;
         }
+    }
+
+    /**
+     * 刷新中心按钮状态
+     */
+    public void refreshState(int position, int duration) {
+        this.position = position;
+        computeCenterXY(position);
+        final int start = mExpanded ? 0 : mRadius;
+        final int radius = mExpanded ? mRadius : -mRadius;
+        mRunner.start(start, 0, radius, 0, duration);
     }
 
     private int getRadiusAndPadding() {
@@ -213,6 +222,10 @@ public class MenuLayout extends ViewGroup implements ICarrier {
             FloatMenu floatMenu = (FloatMenu) getParent();
             floatMenu.remove();
         }
+    }
+
+    public boolean isMoving() {
+        return isMoving;
     }
 
     public boolean isExpanded() {

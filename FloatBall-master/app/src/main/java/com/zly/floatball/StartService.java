@@ -45,20 +45,22 @@ public class StartService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "zly --> onStartCommand");
-        ArrayList<AppData> listData = intent.getParcelableArrayListExtra("data");
+        if (intent != null) {
+            ArrayList<AppData> listData = intent.getParcelableArrayListExtra("data");
 
-        if (listData != null) {
-            log("listDatalength:" + listData.size());
-            addFloatMenuItem(listData);
+            if (listData != null) {
+                log("listDatalength:" + listData.size());
+                addFloatMenuItem(listData);
+            }
+
+            int alpha = intent.getIntExtra("alpha", 100);
+            mFloatballManager.setAlpha(alpha);
+
+            int time = intent.getIntExtra("time", 2);
+            mFloatballManager.setEdgeTime(time);
+
+            log("alpha:" + alpha + " time:" + time);
         }
-
-        int alpha = intent.getIntExtra("alpha", 100);
-        mFloatballManager.setAlpha(alpha);
-
-        int time = intent.getIntExtra("time", 2);
-        mFloatballManager.setEdgeTime(time);
-
-        log("alpha:" + alpha + " time:" + time);
 
         return super.onStartCommand(intent, flags, startId);
     }
@@ -100,7 +102,6 @@ public class StartService extends Service {
             Log.d(TAG, "zly --> menuSize:" + menuSize + " menuItemSize:" + menuItemSize);
             FloatMenuCfg menuCfg = new FloatMenuCfg(menuSize, menuItemSize);
             mFloatballManager = new FloatBallManager(StartService.this, ballCfg, menuCfg);
-
         } else {
             mFloatballManager = new FloatBallManager(this, ballCfg);
         }
